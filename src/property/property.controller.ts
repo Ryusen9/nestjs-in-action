@@ -2,10 +2,12 @@ import { PropertyService } from './property.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   Param,
   ParseIntPipe,
+  Patch,
   // Param,
   // Patch,
   Post,
@@ -27,6 +29,7 @@ import {
 // import type { CreatePropertyZodDto } from './dto/createPropertyZod.dto';
 // import { ParseIdPipe } from './pipes/parseIdPipe';
 import { CreatePropertyDto } from './dto/createProperty.dto';
+import { UpdatePropertyDto } from './dto/updateProperty.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -34,7 +37,7 @@ export class PropertyController {
 
   @Get()
   findAll() {
-    return 'Return all properties';
+    return this.propertyService.findAll();
   }
   //   Params can be added to the route to handle specific property retrieval, for example:
   //   @Get(':id')
@@ -133,5 +136,13 @@ export class PropertyController {
   @Post()
   create(@Body() dto: CreatePropertyDto) {
     return this.propertyService.create(dto);
+  }
+  @Patch(':id')
+  update(@Param('id', ParseIntPipe) id, @Body() dto: UpdatePropertyDto) {
+    return this.propertyService.update(id, dto);
+  }
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id) {
+    return this.propertyService.delete(id);
   }
 }
