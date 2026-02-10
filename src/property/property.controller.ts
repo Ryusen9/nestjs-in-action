@@ -1,10 +1,14 @@
+import { PropertyService } from './property.service';
 import {
   Body,
   Controller,
   Get,
   Headers,
   Param,
-  Patch,
+  ParseIntPipe,
+  // Param,
+  // Patch,
+  Post,
   // Param,
   // ParseBoolPipe,
   // ParseIntPipe,
@@ -21,11 +25,13 @@ import {
 // import { zodValidationPipe } from './pipes/zodValidationPipe';
 // import { createPropertySchema } from './dto/createPropertyZod.dto';
 // import type { CreatePropertyZodDto } from './dto/createPropertyZod.dto';
-import { ParseIdPipe } from './pipes/parseIdPipe';
+// import { ParseIdPipe } from './pipes/parseIdPipe';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 
 @Controller('property')
 export class PropertyController {
+  constructor(private readonly propertyService: PropertyService) {}
+
   @Get()
   findAll() {
     return 'Return all properties';
@@ -111,13 +117,21 @@ export class PropertyController {
   // ) {
   //   return body;
   // }
-  @Patch(':id')
-  update(
-    @Param('id', ParseIdPipe) id,
-    @Body()
-    body: CreatePropertyDto,
-    @Headers('host') header,
-  ) {
-    return header;
+  // @Patch(':id')
+  // update(
+  //   @Param('id', ParseIdPipe) id,
+  //   @Body()
+  //   body: CreatePropertyDto,
+  //   @Headers('host') header,
+  // ) {
+  //   return header;
+  // }
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id) {
+    return this.propertyService.findOne(id);
+  }
+  @Post()
+  create(@Body() dto: CreatePropertyDto) {
+    return this.propertyService.create(dto);
   }
 }
